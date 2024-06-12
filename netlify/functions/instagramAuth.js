@@ -1,3 +1,4 @@
+// netlify/functions/instagramAuth.js
 const axios = require('axios');
 
 exports.handler = async (event, context) => {
@@ -8,13 +9,13 @@ exports.handler = async (event, context) => {
     };
   }
 
-  const { code } = JSON.parse(event.body);
-
-  const client_id = process.env.REACT_APP_INSTAGRAM_CLIENT_ID;
-  const client_secret = process.env.REACT_APP_INSTAGRAM_CLIENT_SECRET;
-  const redirect_uri = 'https://basic-ig-info-app.netlify.app/auth/callback';
-
   try {
+    const { code } = JSON.parse(event.body);
+
+    const client_id = process.env.REACT_APP_INSTAGRAM_CLIENT_ID;
+    const client_secret = process.env.REACT_APP_INSTAGRAM_CLIENT_SECRET;
+    const redirect_uri = 'https://basic-ig-info-app.netlify.app/auth/callback';
+
     const response = await axios.post('https://api.instagram.com/oauth/access_token', {
       client_id,
       client_secret,
@@ -28,9 +29,10 @@ exports.handler = async (event, context) => {
       body: JSON.stringify(response.data),
     };
   } catch (error) {
+    console.error('Error in instagramAuth function:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: error.message }),
+      body: JSON.stringify({ error: error.message, details: error.response ? error.response.data : null }),
     };
   }
 };

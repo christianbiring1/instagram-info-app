@@ -22,6 +22,7 @@ const AuthCallback = () => {
           navigate('/profile')
         } catch (error) {
           console.error('Error fetching access token', error);
+          console.error('Error response:', error.response ? error.response.data : null);
           // Handle the error appropriately in your application
         }
       }

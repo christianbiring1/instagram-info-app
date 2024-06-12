@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const AuthCallback = () => {
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       const params = new URLSearchParams(window.location.search);
@@ -22,15 +24,17 @@ const AuthCallback = () => {
           localStorage.setItem('instagram_user_id', user_id);
 
           // Redirect to profile page or another page
-          window.location.href = '/profile';
+          // window.location.href = '/profile';
+          navigate("/profile")
+
         } catch (error) {
-          console.error('Error fetching access token', error);
+          console.log('Error fetching access token', error);
         }
       }
     };
 
     fetchData();
-  }, []);
+  }, [navigate]);
 
   return (
   <div>Loading...</div>

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AuthCallback = () => {
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchData = async () => {
       const params = new URLSearchParams(window.location.search);
@@ -11,24 +12,17 @@ const AuthCallback = () => {
 
       if (code) {
         try {
-          const response = await axios.post('https://api.instagram.com/oauth/access_token', {
-            client_id: process.env.REACT_APP_INSTAGRAM_CLIENT_ID,
-            client_secret: process.env.REACT_APP_REDIRECT_URI,
-            grant_type: 'authorization_code',
-            redirect_uri: 'https://basic-ig-info-app.netlify.app/auth/callback',
-            code: code,
-          });
+          const response = await axios.post('/.netlify/functions/instagramAuth', { code });
 
           const { access_token, user_id } = response.data;
           localStorage.setItem('instagram_access_token', access_token);
           localStorage.setItem('instagram_user_id', user_id);
 
-          // Redirect to profile page or another page
-          // window.location.href = '/profile';
-          navigate("/profile")
-
+          // Redirect to the profile page
+          navigate('/profile')
         } catch (error) {
-          console.log('Error fetching access token', error);
+          console.error('Error fetching access token', error);
+          // Handle the error appropriately in your application
         }
       }
     };

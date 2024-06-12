@@ -13,7 +13,7 @@ const AuthCallback = () => {
             client_id: process.env.REACT_APP_INSTAGRAM_CLIENT_ID,
             client_secret: process.env.REACT_APP_REDIRECT_URI,
             grant_type: 'authorization_code',
-            redirect_uri: 'http://localhost:5173/auth/callback',
+            redirect_uri: 'https://basic-ig-info-app.netlify.app/auth/callback',
             code: code,
           });
 
